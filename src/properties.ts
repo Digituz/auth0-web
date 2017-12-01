@@ -11,5 +11,6 @@ class Auth0Properties {
               public redirectUri?: string,
               public scope?: string,
               public audience?: string,
-              public disableWarnings = false)
+              public disableWarnings?: boolean) {
+  }
 }
