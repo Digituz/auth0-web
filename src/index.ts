@@ -10,7 +10,7 @@ function configure(properties: Auth0Properties): void {
 }
 
 function isAuthenticated(): boolean {
-    return false;
+  return false;
 }
 
 function signIn(): void {
@@ -22,7 +22,7 @@ function signOut(): void {
 }
 
 function getProfile(): UserProfile | null {
-    return null;
+  return null;
 }
 
 // the following functions are private

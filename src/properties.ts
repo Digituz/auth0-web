@@ -6,10 +6,10 @@ export {Auth0Properties};
 // we removed responseMode and responseType from this version
 
 class Auth0Properties {
-    constructor(public domain: string,
-                public clientID: string,
-                public redirectUri?: string,
-                public scope?: string,
-                public audience?: string,
-                public disableWarnings = false)
+  constructor(public domain: string,
+              public clientID: string,
+              public redirectUri?: string,
+              public scope?: string,
+              public audience?: string,
+              public disableWarnings = false)
 }
