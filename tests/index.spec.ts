@@ -8,22 +8,26 @@ chai.use(spies);
 
 describe('Testing basic functionality of this wrapper', () => {
 
-  it('should be able to import functions', () => {
+  it('should be able to import functions', checkImportFunctions);
+  it('should accept basic configuration', checkBasicConfiguration);
+  it('should accept full configuration', checkFullConfiguration);
+
+  function checkImportFunctions() {
     chai.expect(configure).to.not.be.null;
     chai.expect(isAuthenticated).to.not.be.null;
     chai.expect(signIn).to.not.be.null;
     chai.expect(signOut).to.not.be.null;
     chai.expect(getProfile).to.not.be.null;
-  });
+  }
 
-  it('should accept basic configuration', () => {
+  function checkBasicConfiguration() {
     const spiedConfigure = chai.spy(configure);
     chai.expect(spiedConfigure).to.not.have.been.called();
     spiedConfigure(new Auth0Properties('bk-samples.auth0.com', 'someClientId'));
     chai.expect(spiedConfigure).to.have.been.called();
-  });
+  }
 
-  it('should accept full configuration', () => {
+  function checkFullConfiguration() {
     const spiedConfigure = chai.spy(configure);
     chai.expect(spiedConfigure).to.not.have.been.called();
 
@@ -37,5 +41,5 @@ describe('Testing basic functionality of this wrapper', () => {
     spiedConfigure(auth0Properties);
 
     chai.expect(spiedConfigure).to.have.been.called();
-  });
+  }
 });
