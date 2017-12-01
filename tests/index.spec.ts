@@ -25,12 +25,12 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should clear identity/token properties from localStorage', checkSignOut);
 
   function checkImportFunctions() {
-    chai.expect(configure).to.not.be.null;
-    chai.expect(isAuthenticated).to.not.be.null;
-    chai.expect(signIn).to.not.be.null;
-    chai.expect(parsesHash).to.not.be.null;
-    chai.expect(signOut).to.not.be.null;
-    chai.expect(getProfile).to.not.be.null;
+    chai.expect(configure).to.not.be.undefined;
+    chai.expect(isAuthenticated).to.not.be.undefined;
+    chai.expect(signIn).to.not.be.undefined;
+    chai.expect(parsesHash).to.not.be.undefined;
+    chai.expect(signOut).to.not.be.undefined;
+    chai.expect(getProfile).to.not.be.undefined;
   }
 
   function checkBasicConfiguration() {
@@ -57,19 +57,19 @@ describe('Testing basic functionality of this wrapper', () => {
   }
 
   function checkSignOut() {
-    global.window.localStorage.getItem(ACCESS_TOKEN);
-    global.window.localStorage.getItem(ID_TOKEN);
-    global.window.localStorage.getItem(PROFILE);
-    global.window.localStorage.getItem(EXPIRES_AT);
+    const OTHER_KEY = 'some-other-key';
+    localStorage.setItem(OTHER_KEY, 'some-other-data');
+    localStorage.setItem(ACCESS_TOKEN, 'fake-access-token');
+    localStorage.setItem(ID_TOKEN, 'fake-id-token');
+    localStorage.setItem(PROFILE, 'fake-profile');
+    localStorage.setItem(EXPIRES_AT, 'one-day');
+
+    signOut();
+
+    chai.expect(localStorage.getItem(OTHER_KEY)).to.not.be.null;
+    chai.expect(localStorage.getItem(ACCESS_TOKEN)).to.be.null;
+    chai.expect(localStorage.getItem(ID_TOKEN)).to.be.null;
+    chai.expect(localStorage.getItem(PROFILE)).to.be.null;
+    chai.expect(localStorage.getItem(EXPIRES_AT)).to.be.null;
   }
 });
-
-// mocking localStorage
-global.window = {
-  storage = {},
-  localStorage: {
-    getItem: function (key) {
-      return storage[key];
-    }
-  }
-};

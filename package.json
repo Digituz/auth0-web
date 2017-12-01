@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
+    "test": "mocha --require mock-local-storage -r ts-node/register tests/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "chai": "^4.1.2",
     "chai-spies": "^0.7.1",
     "mocha": "^4.0.1",
+    "mock-local-storage": "^1.0.5",
     "ts-node": "^3.3.0"
   },
   "dependencies": {
