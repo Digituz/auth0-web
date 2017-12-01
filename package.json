@@ -1,0 +1,23 @@
+{
+  "name": "auth0-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunokrebs/auth0-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunokrebs/auth0-web/issues"
+  },
+  "homepage": "https://github.com/brunokrebs/auth0-web#readme"
+}
