@@ -1,4 +1,15 @@
-import {configure, getProfile, isAuthenticated, signIn, signOut} from '../src';
+import {
+  ACCESS_TOKEN,
+  configure,
+  EXPIRES_AT,
+  getProfile,
+  ID_TOKEN,
+  isAuthenticated,
+  parsesHash,
+  PROFILE,
+  signIn,
+  signOut
+} from '../src';
 
 import * as chai from 'chai';
 import * as spies from 'chai-spies';
@@ -11,11 +22,13 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should be able to import functions', checkImportFunctions);
   it('should accept basic configuration', checkBasicConfiguration);
   it('should accept full configuration', checkFullConfiguration);
+  it('should clear identity/token properties from localStorage', checkSignOut);
 
   function checkImportFunctions() {
     chai.expect(configure).to.not.be.null;
     chai.expect(isAuthenticated).to.not.be.null;
     chai.expect(signIn).to.not.be.null;
+    chai.expect(parsesHash).to.not.be.null;
     chai.expect(signOut).to.not.be.null;
     chai.expect(getProfile).to.not.be.null;
   }
@@ -42,4 +55,21 @@ describe('Testing basic functionality of this wrapper', () => {
 
     chai.expect(spiedConfigure).to.have.been.called();
   }
+
+  function checkSignOut() {
+    global.window.localStorage.getItem(ACCESS_TOKEN);
+    global.window.localStorage.getItem(ID_TOKEN);
+    global.window.localStorage.getItem(PROFILE);
+    global.window.localStorage.getItem(EXPIRES_AT);
+  }
 });
+
+// mocking localStorage
+global.window = {
+  storage = {},
+  localStorage: {
+    getItem: function (key) {
+      return storage[key];
+    }
+  }
+};
