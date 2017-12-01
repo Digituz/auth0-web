@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,15 @@
   "bugs": {
     "url": "https://github.com/brunokrebs/auth0-web/issues"
   },
-  "homepage": "https://github.com/brunokrebs/auth0-web#readme"
+  "homepage": "https://github.com/brunokrebs/auth0-web#readme",
+  "devDependencies": {
+    "@types/chai": "^4.0.6",
+    "@types/mocha": "^2.2.44",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "ts-node": "^3.3.0"
+  },
+  "dependencies": {
+    "typescript": "^2.6.2"
+  }
 }
