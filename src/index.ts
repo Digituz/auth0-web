@@ -10,6 +10,7 @@ export {
   signOut,
   getProfile,
   subscribe,
+  Subscriber,
   ACCESS_TOKEN,
   ID_TOKEN,
   PROFILE,

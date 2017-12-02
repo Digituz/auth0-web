@@ -53,6 +53,9 @@ function signOut() {
     localStorage.removeItem(ID_TOKEN);
     localStorage.removeItem(PROFILE);
     localStorage.removeItem(EXPIRES_AT);
+    Object.keys(subscribers).forEach(function (key) {
+        subscribers[key](false);
+    });
 }
 exports.signOut = signOut;
 function getProfile() {
@@ -60,8 +63,20 @@ function getProfile() {
     return profile ? JSON.parse(profile) : null;
 }
 exports.getProfile = getProfile;
+function subscribe(subscriber) {
+    var subscriberKey = Date.now();
+    subscribers[subscriberKey] = subscriber;
+    subscribers[subscriberKey](isAuthenticated());
+    return {
+        unsubscribe: function () {
+            delete subscribers[subscriberKey];
+        }
+    };
+}
+exports.subscribe = subscribe;
 // the following properties and functions are private
 var auth0Client;
+var subscribers = {};
 function loadProfile(authResult) {
     auth0Client.client.userInfo(authResult.accessToken, function (err, profile) {
         var expTime = authResult.expiresIn * 1000 + Date.now();
@@ -70,5 +85,8 @@ function loadProfile(authResult) {
         localStorage.setItem(ID_TOKEN, authResult.idToken);
         localStorage.setItem(PROFILE, JSON.stringify(profile));
         localStorage.setItem(EXPIRES_AT, JSON.stringify(expTime));
+        Object.keys(subscribers).forEach(function (key) {
+            subscribers[key](true);
+        });
     });
 }
