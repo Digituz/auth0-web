@@ -70,11 +70,11 @@ describe('Testing basic functionality of this wrapper', () => {
 
     signOut();
 
-    chai.expect(localStorage.getItem(OTHER_KEY)).to.not.be.null;
     chai.expect(localStorage.getItem(ACCESS_TOKEN)).to.be.null;
     chai.expect(localStorage.getItem(ID_TOKEN)).to.be.null;
     chai.expect(localStorage.getItem(PROFILE)).to.be.null;
     chai.expect(localStorage.getItem(EXPIRES_AT)).to.be.null;
+    chai.expect(localStorage.getItem(OTHER_KEY)).to.not.be.null; //not null
   }
 
   function checkHandleAuthCallback() {
