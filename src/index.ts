@@ -55,7 +55,7 @@ function signOut(): void {
 }
 
 function getProfile(): UserProfile | null {
-  return null;
+  return JSON.parse(localStorage.getItem(PROFILE));
 }
 
 // the following properties and functions are private
