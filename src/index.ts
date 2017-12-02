@@ -27,7 +27,8 @@ function configure(properties: Auth0Properties): void {
 }
 
 function isAuthenticated(): boolean {
-  return false;
+  const expiresAt = JSON.parse(localStorage.getItem(EXPIRES_AT));
+  return Date.now() < expiresAt;
 }
 
 function signIn(): void {
@@ -65,12 +66,10 @@ function loadProfile(authResult: AuthResult): void {
   auth0Client.client.userInfo(authResult.accessToken, (err, profile: UserProfile) => {
     const expTime = authResult.expiresIn * 1000 + Date.now();
     // Save session data and update login status subject
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('profile', JSON.stringify(profile));
-    localStorage.setItem('expires_at', JSON.stringify(expTime));
-    this.userProfile = profile;
-    this.setLoggedIn(true);
+    localStorage.setItem(ACCESS_TOKEN, authResult.accessToken);
+    localStorage.setItem(ID_TOKEN, authResult.idToken);
+    localStorage.setItem(PROFILE, JSON.stringify(profile));
+    localStorage.setItem(EXPIRES_AT, JSON.stringify(expTime));
   });
 }
 

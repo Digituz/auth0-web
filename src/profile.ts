@@ -5,8 +5,8 @@ export {UserProfile, IdentityType};
 class UserProfile {
   constructor(public email: string,
               public userId: string,
-              public username: string,
               // optional below
+              public username?: string,
               public appMetadata?: string | any[],
               public blocked?: boolean,
               public createdAt?: Date,

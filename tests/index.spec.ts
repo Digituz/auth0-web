@@ -79,6 +79,14 @@ describe('Testing basic functionality of this wrapper', () => {
 
   function checkHandleAuthCallback() {
     configure(new Auth0Properties('bk-samples.auth0.com', 'someClientId'));
+    chai.expect(isAuthenticated()).to.be.false;
+
     handleAuthCallback();
+
+    chai.expect(isAuthenticated()).to.be.true;
+    chai.expect(localStorage.getItem(ACCESS_TOKEN)).to.be.not.null;
+    chai.expect(localStorage.getItem(ID_TOKEN)).to.be.not.null;
+    chai.expect(localStorage.getItem(PROFILE)).to.be.not.null;
+    chai.expect(localStorage.getItem(EXPIRES_AT)).to.be.not.null;
   }
 });
