@@ -9,6 +9,7 @@ export {
   handleAuthCallback,
   signOut,
   getProfile,
+  subscribe,
   ACCESS_TOKEN,
   ID_TOKEN,
   PROFILE,
@@ -59,6 +60,10 @@ function signOut(): void {
   localStorage.removeItem(ID_TOKEN);
   localStorage.removeItem(PROFILE);
   localStorage.removeItem(EXPIRES_AT);
+
+  Object.keys(subscribers).forEach(key => {
+    subscribers[key](false);
+  });
 }
 
 function getProfile(): UserProfile | null {
@@ -66,9 +71,21 @@ function getProfile(): UserProfile | null {
   return profile ? JSON.parse(profile) : null;
 }
 
+function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
+  const subscriberKey = Date.now();
+  subscribers[subscriberKey] = subscriber;
+  subscribers[subscriberKey](isAuthenticated());
+  return {
+    unsubscribe: function() {
+      delete subscribers[subscriberKey];
+    }
+  }
+}
+
 // the following properties and functions are private
 
 let auth0Client: any;
+let subscribers = {};
 
 function loadProfile(authResult: AuthResult): void {
   auth0Client.client.userInfo(authResult.accessToken, (err, profile: UserProfile) => {
@@ -78,7 +95,12 @@ function loadProfile(authResult: AuthResult): void {
     localStorage.setItem(ID_TOKEN, authResult.idToken);
     localStorage.setItem(PROFILE, JSON.stringify(profile));
     localStorage.setItem(EXPIRES_AT, JSON.stringify(expTime));
+
+    Object.keys(subscribers).forEach(key => {
+      subscribers[key](true);
+    });
   });
 }
 
 type AuthResult = { accessToken: string, idToken: string, expiresIn: number };
+type Subscriber = (signedIn) => void;

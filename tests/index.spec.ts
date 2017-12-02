@@ -11,7 +11,8 @@ import {
   isAuthenticated,
   PROFILE,
   signIn,
-  signOut
+  signOut,
+  subscribe
 } from '../src';
 
 import * as chai from 'chai';
@@ -28,6 +29,8 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should clear identity/token properties from localStorage', checkSignOut);
   it('should be able to handle Auth0 calback', checkHandleAuthCallback);
   it('should be able to inform if user is authenticated', checkAuthenticated);
+  it('should be able to support subscribers when not auth', checkSubscribeUnauthenticated);
+  it('should be able to support subscribers when auth', checkSubscribeAuthenticated);
 
   function checkImportFunctions() {
     chai.expect(configure).to.not.be.undefined;
@@ -94,5 +97,28 @@ describe('Testing basic functionality of this wrapper', () => {
   function checkAuthenticated() {
     signOut();
     chai.expect(isAuthenticated()).to.be.false;
+  }
+
+  function checkSubscribeUnauthenticated() {
+    const subscription = subscribe(signedIn => {
+      chai.expect(signedIn).to.be.false;
+    });
+    subscription.unsubscribe();
+  }
+
+  function checkSubscribeAuthenticated() {
+    configure({domain: 'bk-samples.auth0.com', clientID: 'someClientID'});
+    chai.expect(isAuthenticated()).to.be.false;
+    let subscription = subscribe(signedIn => {
+      chai.expect(signedIn).to.be.false;
+    });
+    subscription.unsubscribe();
+
+    subscription = subscribe(signedIn => {
+      chai.expect(signedIn).to.be.equal(isAuthenticated());
+    });
+    handleAuthCallback();
+    signOut();
+    subscription.unsubscribe();
   }
 });
