@@ -31,6 +31,6 @@ class IdentityType {
               // optional below
               public connection?: string,
               public isSocial?: boolean,
-              public provider?: string){
+              public provider?: string) {
   }
 }
