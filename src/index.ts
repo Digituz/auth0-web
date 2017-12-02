@@ -36,7 +36,7 @@ function signIn(): void {
 
 function handleAuthCallback(): void {
   // When Auth0 hash parsed, get profile
-  auth0Client.parseHash((err, authResult) => {
+  auth0Client.parseHash((err, authResult: AuthResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
       window.location.hash = '';
       loadProfile(authResult);
@@ -61,6 +61,17 @@ function getProfile(): UserProfile | null {
 
 let auth0Client: any;
 
-function loadProfile(authResult: {}): void {
-
+function loadProfile(authResult: AuthResult): void {
+  auth0Client.client.userInfo(authResult.accessToken, (err, profile: UserProfile) => {
+    const expTime = authResult.expiresIn * 1000 + Date.now();
+    // Save session data and update login status subject
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('profile', JSON.stringify(profile));
+    localStorage.setItem('expires_at', JSON.stringify(expTime));
+    this.userProfile = profile;
+    this.setLoggedIn(true);
+  });
 }
+
+type AuthResult = { accessToken: string, idToken: string, expiresIn: number };
