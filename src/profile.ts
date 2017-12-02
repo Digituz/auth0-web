@@ -7,22 +7,22 @@ class UserProfile {
               public userId: string,
               public username: string,
               // optional below
-              public appMetadata?: string | [],
+              public appMetadata?: string | any[],
               public blocked?: boolean,
-              public createdAt?: DateTime,
+              public createdAt?: Date,
               public emailVerified?: boolean,
               public identities?: IdentityType[],
               public multifactor?: string[],
               public lastIp?: string[],
-              public lastLogin?: DateTime,
+              public lastLogin?: Date,
               public loginsCount?: number,
               public name?: string,
               public nickname?: string,
               public phoneNumber?: string,
               public phoneVerified?: boolean,
               public picture?: string,
-              public updatedAt?: DateTime,
-              public userMetadata?: string | []) {
+              public updatedAt?: Date,
+              public userMetadata?: string | any[]) {
   }
 }
 
@@ -31,5 +31,6 @@ class IdentityType {
               // optional below
               public connection?: string,
               public isSocial?: boolean,
-              public provider?: string)
+              public provider?: string){
+  }
 }
