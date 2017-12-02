@@ -9,7 +9,10 @@
   },
   "scripts": {
     "test": "mocha -r jsdom-global -r mock-local-storage -r ts-node/register tests/**/*.spec.ts",
-    "prepublishOnly": "tsc -p ./ --outDir dist/"
+    "prepublishOnly": "tsc -p ./ --outDir dist/",
+    "bump_patch": "npm version patch && npm publish",
+    "bump_minor": "npm version minor && npm publish",
+    "bump_major": "npm version major && npm publish"
   },
   "repository": {
     "type": "git",
