@@ -1,11 +1,14 @@
+import './mocks';
+import 'jsdom-global/register'
+
 import {
   ACCESS_TOKEN,
   configure,
   EXPIRES_AT,
   getProfile,
+  handleAuthCallback,
   ID_TOKEN,
   isAuthenticated,
-  parsesHash,
   PROFILE,
   signIn,
   signOut
@@ -23,12 +26,13 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should accept basic configuration', checkBasicConfiguration);
   it('should accept full configuration', checkFullConfiguration);
   it('should clear identity/token properties from localStorage', checkSignOut);
+  it('should be able to handle Auth0 calback', checkHandleAuthCallback);
 
   function checkImportFunctions() {
     chai.expect(configure).to.not.be.undefined;
     chai.expect(isAuthenticated).to.not.be.undefined;
     chai.expect(signIn).to.not.be.undefined;
-    chai.expect(parsesHash).to.not.be.undefined;
+    chai.expect(handleAuthCallback).to.not.be.undefined;
     chai.expect(signOut).to.not.be.undefined;
     chai.expect(getProfile).to.not.be.undefined;
   }
@@ -71,5 +75,10 @@ describe('Testing basic functionality of this wrapper', () => {
     chai.expect(localStorage.getItem(ID_TOKEN)).to.be.null;
     chai.expect(localStorage.getItem(PROFILE)).to.be.null;
     chai.expect(localStorage.getItem(EXPIRES_AT)).to.be.null;
+  }
+
+  function checkHandleAuthCallback() {
+    configure(new Auth0Properties('bk-samples.auth0.com', 'someClientId'));
+    handleAuthCallback();
   }
 });

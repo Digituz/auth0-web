@@ -6,7 +6,7 @@ export {
   configure,
   isAuthenticated,
   signIn,
-  parsesHash,
+  handleAuthCallback,
   signOut,
   getProfile,
   ACCESS_TOKEN,
@@ -23,7 +23,7 @@ const PROFILE = 'profile';
 const EXPIRES_AT = 'expires_at';
 
 function configure(properties: Auth0Properties): void {
-  this.auth0Client = new auth0.WebAuth(properties);
+  auth0Client = new auth0.WebAuth(properties);
 }
 
 function isAuthenticated(): boolean {
@@ -31,11 +31,19 @@ function isAuthenticated(): boolean {
 }
 
 function signIn(): void {
-  this.auth0Client.authorize();
+  auth0Client.authorize();
 }
 
-function parsesHash(): void {
-
+function handleAuthCallback(): void {
+  // When Auth0 hash parsed, get profile
+  auth0Client.parseHash((err, authResult) => {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      window.location.hash = '';
+      loadProfile(authResult);
+    } else if (err) {
+      console.error(`Error: ${err.error}`);
+    }
+  });
 }
 
 function signOut(): void {
@@ -53,6 +61,6 @@ function getProfile(): UserProfile | null {
 
 let auth0Client: any;
 
-function loadProfile(): void {
+function loadProfile(authResult: {}): void {
 
 }
