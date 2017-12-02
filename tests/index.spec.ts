@@ -40,7 +40,7 @@ describe('Testing basic functionality of this wrapper', () => {
   function checkBasicConfiguration() {
     const spiedConfigure = chai.spy(configure);
     chai.expect(spiedConfigure).to.not.have.been.called();
-    spiedConfigure(new Auth0Properties('bk-samples.auth0.com', 'someClientId'));
+    spiedConfigure({domain: 'bk-samples.auth0.com', clientID: 'someClientID'});
     chai.expect(spiedConfigure).to.have.been.called();
   }
 
@@ -48,13 +48,13 @@ describe('Testing basic functionality of this wrapper', () => {
     const spiedConfigure = chai.spy(configure);
     chai.expect(spiedConfigure).to.not.have.been.called();
 
-    const auth0Properties = new Auth0Properties(
-      'bk-samples.auth0.com',
-      'someClientId',
-      'http://localhost:4200/callback',
-      'read:contacts',
-      'https://contacts.auth0samples.com/'
-    );
+    const auth0Properties = {
+      domain: 'bk-samples.auth0.com',
+      clientID: 'someClientID',
+      callbackUrl: 'http://localhost:4200/callback',
+      scope: 'read:contacts',
+      audience: 'https://contacts.auth0samples.com/'
+    };
     spiedConfigure(auth0Properties);
 
     chai.expect(spiedConfigure).to.have.been.called();
@@ -78,7 +78,7 @@ describe('Testing basic functionality of this wrapper', () => {
   }
 
   function checkHandleAuthCallback() {
-    configure(new Auth0Properties('bk-samples.auth0.com', 'someClientId'));
+    configure({domain: 'bk-samples.auth0.com', clientID: 'someClientID'});
     chai.expect(isAuthenticated()).to.be.false;
 
     handleAuthCallback();

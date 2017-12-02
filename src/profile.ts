@@ -2,35 +2,33 @@ export {UserProfile, IdentityType};
 
 // UserProfile and IdentityType were based on: https://auth0.com/docs/user-profile/user-profile-structure
 
-class UserProfile {
-  constructor(public email: string,
-              public userId: string,
-              // optional below
-              public username?: string,
-              public appMetadata?: string | any[],
-              public blocked?: boolean,
-              public createdAt?: Date,
-              public emailVerified?: boolean,
-              public identities?: IdentityType[],
-              public multifactor?: string[],
-              public lastIp?: string[],
-              public lastLogin?: Date,
-              public loginsCount?: number,
-              public name?: string,
-              public nickname?: string,
-              public phoneNumber?: string,
-              public phoneVerified?: boolean,
-              public picture?: string,
-              public updatedAt?: Date,
-              public userMetadata?: string | any[]) {
-  }
-}
+type UserProfile = {
+  email: string,
+  userId: string,
+  // below properties are optional
+  username?: string,
+  appMetadata?: string | any[],
+  blocked?: boolean,
+  createdAt?: Date,
+  emailVerified?: boolean,
+  identities?: IdentityType[],
+  multifactor?: string[],
+  lastIp?: string[],
+  lastLogin?: Date,
+  loginsCount?: number,
+  name?: string,
+  nickname?: string,
+  phoneNumber?: string,
+  phoneVerified?: boolean,
+  picture?: string,
+  updatedAt?: Date,
+  userMetadata?: string | any[]
+};
 
-class IdentityType {
-  constructor(public userId: string,
-              // optional below
-              public connection?: string,
-              public isSocial?: boolean,
-              public provider?: string) {
-  }
-}
+type IdentityType = {
+  userId: string,
+  // below properties are optional
+  connection?: string,
+  isSocial?: boolean,
+  provider?: string
+};

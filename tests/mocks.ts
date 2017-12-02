@@ -14,7 +14,7 @@ const auth0Mock = {
     },
     client: {
       userInfo: (accessToken: string, cb: (err, profile: UserProfile) => void) => {
-        cb(null, new UserProfile('bruno.krebs@auth0.com', 'google-oauth2|100112663908880255058'));
+        cb(null, { email: 'bruno.krebs@auth0.com', userId: 'google-oauth2|100112663908880255058' });
       }
     }
   })
