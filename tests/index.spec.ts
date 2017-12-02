@@ -27,6 +27,7 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should accept full configuration', checkFullConfiguration);
   it('should clear identity/token properties from localStorage', checkSignOut);
   it('should be able to handle Auth0 calback', checkHandleAuthCallback);
+  it('should be able to inform if user is authenticated', checkAuthenticated);
 
   function checkImportFunctions() {
     chai.expect(configure).to.not.be.undefined;
@@ -88,5 +89,10 @@ describe('Testing basic functionality of this wrapper', () => {
     chai.expect(localStorage.getItem(ID_TOKEN)).to.be.not.null;
     chai.expect(localStorage.getItem(PROFILE)).to.be.not.null;
     chai.expect(localStorage.getItem(EXPIRES_AT)).to.be.not.null;
+  }
+
+  function checkAuthenticated() {
+    signOut();
+    chai.expect(isAuthenticated()).to.be.false;
   }
 });

@@ -21,14 +21,21 @@ const ACCESS_TOKEN = 'access_token';
 const ID_TOKEN = 'id_token';
 const PROFILE = 'profile';
 const EXPIRES_AT = 'expires_at';
+const RESPONSE_TYPE = 'token id_token';
 
 function configure(properties: Auth0Properties): void {
-  auth0Client = new auth0.WebAuth(properties);
+  auth0Client = new auth0.WebAuth({
+    ...properties,
+    responseType: RESPONSE_TYPE
+  });
 }
 
 function isAuthenticated(): boolean {
-  const expiresAt = JSON.parse(localStorage.getItem(EXPIRES_AT));
-  return Date.now() < expiresAt;
+  const expiredsAt = localStorage.getItem(EXPIRES_AT);
+  if (!expiredsAt) {
+    return false;
+  }
+  return JSON.parse(expiredsAt) > Date.now();
 }
 
 function signIn(): void {
@@ -55,7 +62,8 @@ function signOut(): void {
 }
 
 function getProfile(): UserProfile | null {
-  return JSON.parse(localStorage.getItem(PROFILE));
+  const profile = localStorage.getItem(PROFILE);
+  return profile ? JSON.parse(profile) : null;
 }
 
 // the following properties and functions are private
