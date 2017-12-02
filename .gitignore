@@ -1,5 +1,6 @@
 # WebStorm
 .idea/
+dist/
 
 # Logs
 logs
@@ -59,4 +60,7 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# mac
+.DS_Store
 
