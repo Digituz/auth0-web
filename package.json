@@ -2,12 +2,14 @@
   "name": "auth0-web",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./index.d.ts",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha -r jsdom-global -r mock-local-storage -r ts-node/register tests/**/*.spec.ts"
+    "test": "mocha -r jsdom-global -r mock-local-storage -r ts-node/register tests/**/*.spec.ts",
+    "prepublishOnly": "tsc -p ./ --outDir dist/"
   },
   "repository": {
     "type": "git",
