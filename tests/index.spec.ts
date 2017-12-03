@@ -16,6 +16,8 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should be able to inform if user is authenticated', checkAuthenticated);
   it('should be able to support subscribers when not auth', checkSubscribeUnauthenticated);
   it('should be able to support subscribers when auth', checkSubscribeAuthenticated);
+  it('should return profile from localStorage', checkGetProfile);
+  it('should call authorize', checkSignIn);
 
   function checkImportFunctions() {
     chai.expect(Auth0Web.configure).to.not.be.undefined;
@@ -105,5 +107,19 @@ describe('Testing basic functionality of this wrapper', () => {
     Auth0Web.handleAuthCallback();
     Auth0Web.signOut();
     subscription.unsubscribe();
+  }
+
+  function checkGetProfile() {
+    Auth0Web.configure({domain: 'bk-samples.auth0.com', clientID: 'someClientID'});
+    chai.expect(Auth0Web.getProfile()).to.be.null;
+    Auth0Web.handleAuthCallback();
+    chai.expect(Auth0Web.getProfile()).to.not.be.null;
+  }
+
+  function checkSignIn() {
+    Auth0Web.configure({domain: 'bk-samples.auth0.com', clientID: 'someClientID'});
+    chai.expect(Auth0Web.auth0Client.called()).to.be.false;
+    Auth0Web.signIn();
+    chai.expect(Auth0Web.auth0Client.called()).to.be.true;
   }
 });

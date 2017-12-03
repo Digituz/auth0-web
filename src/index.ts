@@ -3,6 +3,7 @@ import {Auth0Properties} from "./properties";
 import * as auth0 from 'auth0-js';
 
 export {
+  auth0Client,
   configure,
   isAuthenticated,
   signIn,
