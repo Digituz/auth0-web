@@ -1,4 +1,5 @@
-![Auth0 Web build status](https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master)
+[![Auth0 Web build status](https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master)](https://travis-ci.org/brunokrebs/auth0-web)
+[![Codecov](https://codecov.io/gh/brunokrebs/auth0-web/branch/master/graph/badge.svg)](https://codecov.io/gh/brunokrebs/auth0-web)
 
 ## Auth0 Web
 

@@ -8,11 +8,25 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha -r jsdom-global -r mock-local-storage -r ts-node/register tests/**/*.spec.ts",
+    "test": "nyc mocha -r jsdom-global -r mock-local-storage -r ts-node/register -r source-map-support/register tests/**/*.spec.ts",
+    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "prepublishOnly": "tsc -p ./ --outDir dist/",
     "bump_patch": "npm version patch && npm publish",
     "bump_minor": "npm version minor && npm publish",
     "bump_major": "npm version major && npm publish"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "repository": {
     "type": "git",
@@ -27,8 +41,8 @@
   "homepage": "https://github.com/brunokrebs/auth0-web#readme",
   "devDependencies": {
     "@types/chai": "^4.0.6",
-    "@types/mocha": "^2.2.44",
     "@types/chai-spies": "0.0.0",
+    "@types/mocha": "^2.2.44",
     "chai": "^4.1.2",
     "chai-spies": "^0.7.1",
     "jsdom": "11.5.1",
@@ -36,6 +50,8 @@
     "mocha": "^4.0.1",
     "mock-local-storage": "^1.0.5",
     "mockery": "^2.1.0",
+    "nyc": "^11.3.0",
+    "source-map-support": "^0.5.0",
     "ts-node": "^3.3.0"
   },
   "dependencies": {
