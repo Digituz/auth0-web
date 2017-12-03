@@ -43,11 +43,11 @@ Auth0.handleAuthCallback();
 
 // get user profile
 Auth0.getProfile();
+```
 
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
-```
 
 <!-- vars -->
 [codecov-image]: https://img.shields.io/codecov/c/github/brunokrebs/auth0-web/master.svg
