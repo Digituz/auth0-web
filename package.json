@@ -21,7 +21,8 @@
       ".tsx"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "dist"
     ],
     "reporter": [
       "html"
@@ -45,6 +46,7 @@
     "@types/mocha": "^2.2.44",
     "chai": "^4.1.2",
     "chai-spies": "^0.7.1",
+    "codecov": "^3.0.0",
     "jsdom": "11.5.1",
     "jsdom-global": "3.0.2",
     "mocha": "^4.0.1",
