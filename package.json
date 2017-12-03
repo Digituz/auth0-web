@@ -9,10 +9,7 @@
   },
   "scripts": {
     "test": "nyc mocha -r jsdom-global -r mock-local-storage -r ts-node/register -r source-map-support/register tests/**/*.spec.ts",
-    "prepublishOnly": "tsc -p ./ --outDir dist/",
-    "bump_patch": "npm version patch && npm publish",
-    "bump_minor": "npm version minor && npm publish",
-    "bump_major": "npm version major && npm publish"
+    "prepublishOnly": "tsc -p ./ --outDir dist/"
   },
   "nyc": {
     "extension": [
