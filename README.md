@@ -1,5 +1,7 @@
-[![Auth0 Web build status](https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master)](https://travis-ci.org/brunokrebs/auth0-web)
 [![Codecov](https://codecov.io/gh/brunokrebs/auth0-web/branch/master/graph/badge.svg)](https://codecov.io/gh/brunokrebs/auth0-web)
+[![Auth0 Web build status][travis-image][travis-url]
+[![Code Coverage][codecov-image]][codecov-url]
+[![License][license-image]][license-url]
 
 ## Auth0 Web
 
@@ -42,4 +44,16 @@ Auth0.handleAuthCallback();
 
 // get user profile
 Auth0.getProfile();
+
+## License
+
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
 ```
+
+<!-- vars -->
+[codecov-image]: https://img.shields.io/codecov/c/github/brunokrebs/auth0-web/master.svg
+[codecov-url]: https://codecov.io/github/brunokrebs/auth0-web?branch=master
+[license-image]: http://img.shields.io/npm/l/auth0-web.svg
+[license-url]: #license
+[travis-image]: https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master
+[travis-url]: https://travis-ci.org/brunokrebs/auth0-web
