@@ -40,9 +40,9 @@
   },
   "homepage": "https://github.com/brunokrebs/auth0-web#readme",
   "devDependencies": {
-    "@types/chai": "^4.0.6",
-    "@types/chai-spies": "0.0.0",
+    "@types/chai": "^4.0.7",
     "@types/mocha": "^2.2.44",
+    "@types/sinon": "^4.0.0",
     "chai": "^4.1.2",
     "chai-spies": "^0.7.1",
     "codecov": "^3.0.0",
@@ -52,6 +52,7 @@
     "mock-local-storage": "^1.0.5",
     "mockery": "^2.1.0",
     "nyc": "^11.3.0",
+    "sinon": "^4.1.2",
     "source-map-support": "^0.5.0",
     "ts-node": "^3.3.0"
   },

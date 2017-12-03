@@ -1,5 +1,5 @@
 [![Codecov](https://codecov.io/gh/brunokrebs/auth0-web/branch/master/graph/badge.svg)](https://codecov.io/gh/brunokrebs/auth0-web)
-[![Auth0 Web build status][travis-image][travis-url]
+[![Auth0 Web build status][travis-image]][travis-url]
 [![Code Coverage][codecov-image]][codecov-url]
 [![License][license-image]][license-url]
 
