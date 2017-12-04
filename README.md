@@ -1,6 +1,7 @@
 [![Auth0 Web build status][travis-image]][travis-url]
 [![Code Coverage][codecov-image]][codecov-url]
 [![License][license-image]][license-url]
+[![NPM version][npm-image]][npm-url]
 
 ## Auth0 Web
 
@@ -60,3 +61,5 @@ This project is licensed under the MIT license. See the [LICENSE](LICENSE) file 
 [license-url]: #license
 [travis-image]: https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master
 [travis-url]: https://travis-ci.org/brunokrebs/auth0-web
+[npm-image]: https://img.shields.io/npm/v/auth0-web.svg
+[npm-url]: https://npmjs.org/package/auth0-web
