@@ -45,6 +45,10 @@ Auth0.handleAuthCallback();
 Auth0.getProfile();
 ```
 
+By default, this library uses the [**Implicit Grant flow** of OAuth 2.0](https://auth0.com/docs/api-auth/tutorials/implicit-grant).
+However, developers looking forward to use the [**Authorization Code Grant flow**](https://auth0.com/docs/api-auth/tutorials/authorization-code-grant)
+can still use this library by passing `oauthFlow: AUTHORIZATION_CODE`, alongside with the other properties, to `Auth0Web.configure()`.
+
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.

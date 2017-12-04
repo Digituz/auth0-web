@@ -11,5 +11,6 @@ type Auth0Properties = {
   redirectUri?: string,
   scope?: string,
   audience?: string,
-  disableWarnings?: boolean
+  disableWarnings?: boolean,
+  oauthFlow?: string;
 };

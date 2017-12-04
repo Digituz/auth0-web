@@ -13,9 +13,10 @@ export {
   subscribe,
   Subscriber,
   ACCESS_TOKEN,
+  AUTHORIZATION_CODE,
+  EXPIRES_AT,
   ID_TOKEN,
-  PROFILE,
-  EXPIRES_AT
+  PROFILE
 };
 
 // the following functions are exported
@@ -24,12 +25,15 @@ const ACCESS_TOKEN = 'access_token';
 const ID_TOKEN = 'id_token';
 const PROFILE = 'profile';
 const EXPIRES_AT = 'expires_at';
-const RESPONSE_TYPE = 'token id_token';
+const AUTHORIZATION_CODE = 'code';
+const IMPLICTY_RESPONSE_TYPE = 'token id_token';
 
 function configure(properties: Auth0Properties): void {
+  // defining responseType based on how/if the developer set `oauthFlow` property
+  let responseType = properties.oauthFlow == AUTHORIZATION_CODE ? AUTHORIZATION_CODE : IMPLICTY_RESPONSE_TYPE;
   auth0Client = new auth0.WebAuth({
     ...properties,
-    responseType: RESPONSE_TYPE
+    responseType
   });
 }
 
@@ -78,7 +82,7 @@ function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
   subscribers[subscriberKey] = subscriber;
   subscribers[subscriberKey](isAuthenticated());
   return {
-    unsubscribe: function() {
+    unsubscribe: function () {
       delete subscribers[subscriberKey];
     }
   }

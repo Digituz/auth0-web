@@ -5,6 +5,8 @@ import * as Auth0Web from '../src';
 
 import * as chai from 'chai';
 import * as sinonjs from 'sinon';
+import {AUTHORIZATION_CODE} from "../src/index";
+import {Auth0Properties} from "../src/properties";
 
 describe('Testing basic functionality of this wrapper', () => {
 
@@ -18,6 +20,7 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should be able to support subscribers when auth', checkSubscribeAuthenticated);
   it('should return profile from localStorage', checkGetProfile);
   it('should call authorize', checkSignIn);
+  it('should support authorization code flow', checkFlows);
 
   function checkImportFunctions() {
     chai.expect(Auth0Web.configure).to.not.be.undefined;
@@ -121,5 +124,17 @@ describe('Testing basic functionality of this wrapper', () => {
     chai.expect(Auth0Web.auth0Client.called()).to.be.false;
     Auth0Web.signIn();
     chai.expect(Auth0Web.auth0Client.called()).to.be.true;
+  }
+
+  function checkFlows() {
+    // checking default config
+    let auth0Properties: Auth0Properties = {domain: 'bk-samples.auth0.com', clientID: 'someClientID'};
+    Auth0Web.configure(auth0Properties);
+    chai.expect(Auth0Web.auth0Client.properties().responseType).to.be.equal('token id_token');
+
+    // checking authorization code flow
+    auth0Properties = {domain: 'bk-samples.auth0.com', clientID: 'someClientID', oauthFlow: AUTHORIZATION_CODE};
+    Auth0Web.configure(auth0Properties);
+    chai.expect(Auth0Web.auth0Client.properties().responseType).to.be.equal(AUTHORIZATION_CODE);
   }
 });
