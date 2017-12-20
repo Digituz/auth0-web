@@ -16,6 +16,10 @@ export function signOut(): void;
 
 export function getProfile(): UserProfile | null;
 
+export function getExtraToken(tokenName: string): string;
+
+export function silentAuth(tokenName: string, audience: string, scopes: string): void;
+
 export function subscribe(subscriber: Subscriber): { unsubscribe: () => void };
 
 export type Subscriber = Subscriber;

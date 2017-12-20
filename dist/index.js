@@ -12,15 +12,21 @@ var auth0 = require("auth0-js");
 // the following functions are exported
 var ACCESS_TOKEN = 'access_token';
 exports.ACCESS_TOKEN = ACCESS_TOKEN;
+var EXTRA_TOKENS = 'extra_tokens';
+exports.EXTRA_TOKENS = EXTRA_TOKENS;
 var ID_TOKEN = 'id_token';
 exports.ID_TOKEN = ID_TOKEN;
 var PROFILE = 'profile';
 exports.PROFILE = PROFILE;
 var EXPIRES_AT = 'expires_at';
 exports.EXPIRES_AT = EXPIRES_AT;
-var RESPONSE_TYPE = 'token id_token';
+var AUTHORIZATION_CODE = 'code';
+exports.AUTHORIZATION_CODE = AUTHORIZATION_CODE;
+var IMPLICTY_RESPONSE_TYPE = 'token id_token';
 function configure(properties) {
-    auth0Client = new auth0.WebAuth(__assign({}, properties, { responseType: RESPONSE_TYPE }));
+    // defining responseType based on how/if the developer set `oauthFlow` property
+    var responseType = properties.oauthFlow == AUTHORIZATION_CODE ? AUTHORIZATION_CODE : IMPLICTY_RESPONSE_TYPE;
+    exports.auth0Client = auth0Client = new auth0.WebAuth(__assign({}, properties, { responseType: responseType }));
 }
 exports.configure = configure;
 function isAuthenticated() {
@@ -50,6 +56,7 @@ function handleAuthCallback() {
 exports.handleAuthCallback = handleAuthCallback;
 function signOut() {
     localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(EXTRA_TOKENS);
     localStorage.removeItem(ID_TOKEN);
     localStorage.removeItem(PROFILE);
     localStorage.removeItem(EXPIRES_AT);
@@ -74,14 +81,32 @@ function subscribe(subscriber) {
     };
 }
 exports.subscribe = subscribe;
+function silentAuth(tokenName, audience, scopes) {
+    auth0Client.checkSession({ audience: audience, scopes: scopes }, function (err, authResult) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+        extraTokens[tokenName] = authResult.accessToken;
+    });
+}
+exports.silentAuth = silentAuth;
+function getExtraToken(tokenName) {
+    var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+    return extraTokens[tokenName];
+}
+exports.getExtraToken = getExtraToken;
 // the following properties and functions are private
 var auth0Client;
+exports.auth0Client = auth0Client;
 var subscribers = {};
 function loadProfile(authResult) {
     auth0Client.client.userInfo(authResult.accessToken, function (err, profile) {
         var expTime = authResult.expiresIn * 1000 + Date.now();
         // Save session data and update login status subject
         localStorage.setItem(ACCESS_TOKEN, authResult.accessToken);
+        localStorage.setItem(EXTRA_TOKENS, JSON.stringify({}));
         localStorage.setItem(ID_TOKEN, authResult.idToken);
         localStorage.setItem(PROFILE, JSON.stringify(profile));
         localStorage.setItem(EXPIRES_AT, JSON.stringify(expTime));
@@ -90,3 +115,4 @@ function loadProfile(authResult) {
         });
     });
 }
+//# sourceMappingURL=index.js.map
