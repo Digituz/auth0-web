@@ -93,8 +93,8 @@ function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
   }
 }
 
-function silentAuth(tokenName, audience, scopes) {
-  auth0Client.checkSession({ audience, scopes }, function (err, authResult) {
+function silentAuth(tokenName, audience, scope) {
+  auth0Client.checkSession({ audience, scope }, function (err, authResult) {
     if (err) {
       console.log(err);
       return;
