@@ -1,6 +1,6 @@
 {
   "name": "auth0-web",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "",
   "main": "./dist/index.js",
   "types": "./index.d.ts",
