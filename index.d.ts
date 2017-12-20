@@ -2,6 +2,8 @@ import {Auth0Properties} from './src/properties';
 import {UserProfile} from './src/profile';
 import {Subscriber} from "./src/index";
 
+export const auth0Client: any;
+
 export function configure(properties: Auth0Properties): void;
 
 export function isAuthenticated(): boolean;
