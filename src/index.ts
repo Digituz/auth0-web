@@ -9,12 +9,15 @@ export {
   signIn,
   handleAuthCallback,
   signOut,
+  getExtraToken,
   getProfile,
+  silentAuth,
   subscribe,
   Subscriber,
   ACCESS_TOKEN,
   AUTHORIZATION_CODE,
   EXPIRES_AT,
+  EXTRA_TOKENS,
   ID_TOKEN,
   PROFILE
 };
@@ -22,6 +25,7 @@ export {
 // the following functions are exported
 
 const ACCESS_TOKEN = 'access_token';
+const EXTRA_TOKENS = 'extra_tokens';
 const ID_TOKEN = 'id_token';
 const PROFILE = 'profile';
 const EXPIRES_AT = 'expires_at';
@@ -63,6 +67,7 @@ function handleAuthCallback(): void {
 
 function signOut(): void {
   localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(EXTRA_TOKENS);
   localStorage.removeItem(ID_TOKEN);
   localStorage.removeItem(PROFILE);
   localStorage.removeItem(EXPIRES_AT);
@@ -88,6 +93,22 @@ function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
   }
 }
 
+function silentAuth(tokenName, audience, scopes) {
+  auth0Client.checkSession({ audience, scopes }, function (err, authResult) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+    extraTokens[tokenName] = authResult.accessToken;
+  });
+}
+
+function getExtraToken(tokenName) {
+  const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+  return extraTokens[tokenName];
+}
+
 // the following properties and functions are private
 
 let auth0Client: any;
@@ -98,6 +119,7 @@ function loadProfile(authResult: AuthResult): void {
     const expTime = authResult.expiresIn * 1000 + Date.now();
     // Save session data and update login status subject
     localStorage.setItem(ACCESS_TOKEN, authResult.accessToken);
+    localStorage.setItem(EXTRA_TOKENS, JSON.stringify({}));
     localStorage.setItem(ID_TOKEN, authResult.idToken);
     localStorage.setItem(PROFILE, JSON.stringify(profile));
     localStorage.setItem(EXPIRES_AT, JSON.stringify(expTime));
