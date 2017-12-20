@@ -89,7 +89,7 @@ function silentAuth(tokenName, audience, scopes) {
         }
         var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
         extraTokens[tokenName] = authResult.accessToken;
-        localStorage.setItem(EXTRA_TOKENS, extraTokens);
+        localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
     });
 }
 exports.silentAuth = silentAuth;
