@@ -93,15 +93,15 @@ function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
   }
 }
 
-function silentAuth(tokenName, audience, scope) {
-  auth0Client.checkSession({ audience, scope }, function (err, authResult) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
-    extraTokens[tokenName] = authResult.accessToken;
-    localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens))
+function silentAuth(tokenName, audience, scope): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    auth0Client.checkSession({ audience, scope }, function (err, authResult) {
+      if (err) return reject(err);
+      const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+      extraTokens[tokenName] = authResult.accessToken;
+      localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
+      return resolve();
+    });
   });
 }
 

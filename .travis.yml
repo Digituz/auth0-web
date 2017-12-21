@@ -1,13 +1,14 @@
 language: node_js
 node_js:
 - node
-- '6'
-after_success: codecov
+before_deploy:
+- tsc -p ./ --outDir dist/
 deploy:
+  skip_cleanup: true
   provider: npm
   email: krebs.bruno@gmail.com
   api_key:
-    secure: mKcHeI+YUGrp7T4pTyXfb+X7iGEPdBDJzVeoYS4hlIa9FIr9WNg4QQCMSpIVWKzecHIwXp7FOzCdhiP1rIq4JX8IBkbQ4ea9UtMYjLxgHOc/neHgir0V/IdkWwF2UhVxW59psOzReLpB5Cu8DR/yxF8fsScli1FUQ+58VEPMXhT3x9EoxjZKGwD4kjolajjQpbT5c0Tj1uVyeJNe+yD8Se6CR1Ju/ECNs/eLBpD+j9hmAgbXmDZDOEMuUmhq1UD2bzolkzf5il0K/e+lvOZLP3W9gbc86WB+Btbr/gpZjvarrFNaRKSkX7EKZrjZFhNvx8LQmOEk9M++9RU7AXTK86dvpCW/ba83Qkz1wqXWWCYa8KsRzDEZqstmGbT9bAetpoXrL5lMSzPeTNgeG9ZMf1gJY2XitPI8V99zF6FKl1F/UTc4lZj6Nuh3y593jYulMD4EJlamQlQhzIsCWKJ5GpQ2FnonLEMtBkGYQFys5DurvaF3PI7Da7HvAHcORewVNi23+t6nwnsNz8PCPKYreJRe7aav9jRVOoocGUSN29bs7oWGYMauRF2zOOd9hTaRWsBpE7J11MFmbg3CqQlEgOTNdpYzwQWBcGu+Rdmy501hv2S3uXPcq1j3Oe3Ahpo2OLu9MTbfu+C4WrN/ZkM/Q+KhnTnB8zdGNGkuTpkGews=
+    secure: EmsRZJSOSdEor8ZmPABEbxSwopMGdvDIdIv1rGHqr6rdrgoqsuiGITN3nCayn/k+MfytHb/ZbsOrZOEQ4i6MMi5KUoa6AO4JITudEkmcnfoKHroA3HFLpmy0oPY8j1Xw2FVCNj2yc+Bfdl3z6BVBngOgUB/Sj4KvEGtsjCEy6toxGcFgfh8lvR66fL4tXKltSQbrHi3cQc90QwZd3749hsbDyqM2R6jO/BEo7zCtWEN4DzHxVbZNPe5Q+3sCJr7o+4YNF+tZrWonIkliWjunY5YSwMbUVXnfEVmwRQr94ql+/K5UzkI03YMKiUkKIZ5J5O7iOvvmttMSy3dbCDIdd84+pdlm3lvS7maWOweSe51WoT3K/MaG+YIHYe2BD397sUPQ5XD5ZIoXGwTvIfgfZyrpmfMS5m4kNYL6JwlgyxR6gD/Lyf368w+1gaRidO6aaIWuve/+z09lHVPvvrZcbwiWnfWz7b4eEt9XB6EKYz+Q+ct/nkLcv55JhwSkquO5akxxeLUfjo7BFYJEfPDAghsanoUTTvV59z9BubW6h1WIb7PqgyOdBwTd77cBcOOhlGn4u7moyFlDDKnXeebPA/kuT9naAOJzBa6VRtpfWnAgRYVCh8Rurc4eSF37xQpDuTxcaSlTI0Zxd0iPdR4MbvF4/xTCWJIPV1hz/aEt9v4=
   on:
     tags: true
     repo: brunokrebs/auth0-web

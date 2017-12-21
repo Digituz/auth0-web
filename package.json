@@ -8,8 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "nyc mocha -r jsdom-global -r mock-local-storage -r ts-node/register -r source-map-support/register tests/**/*.spec.ts",
-    "prepublishOnly": "tsc -p ./ --outDir dist/"
+    "test": "nyc mocha -r jsdom-global -r mock-local-storage -r ts-node/register -r source-map-support/register tests/**/*.spec.ts"
   },
   "nyc": {
     "extension": [
@@ -20,9 +19,9 @@
       "src/**/*.ts"
     ],
     "reporter": [
-      "html"
-    ],
-    "all": true
+      "lcov",
+      "text"
+    ]
   },
   "repository": {
     "type": "git",
