@@ -44,6 +44,7 @@ function configure(properties: Auth0Properties): void {
 function isAuthenticated(): boolean {
   const expiredsAt = localStorage.getItem(EXPIRES_AT);
   if (!expiredsAt) {
+    removeAuth0Props();
     return false;
   }
   return JSON.parse(expiredsAt) > Date.now();
@@ -65,13 +66,16 @@ function handleAuthCallback(): void {
   });
 }
 
-function signOut(): void {
+function removeAuth0Props() {
   localStorage.removeItem(ACCESS_TOKEN);
   localStorage.removeItem(EXTRA_TOKENS);
   localStorage.removeItem(ID_TOKEN);
   localStorage.removeItem(PROFILE);
   localStorage.removeItem(EXPIRES_AT);
+}
 
+function signOut(): void {
+  removeAuth0Props();
   Object.keys(subscribers).forEach(key => {
     subscribers[key](false);
   });
