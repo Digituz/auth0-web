@@ -48,9 +48,9 @@ function isAuthenticated(): boolean {
     removeAuth0Props();
     return false;
   }
-  const isExpired = JSON.parse(expiredsAt) > Date.now();
-  if (isExpired) removeAuth0Props();
-  return isExpired;
+  const tokenStillValid = JSON.parse(expiredsAt) > Date.now();
+  if (!tokenStillValid) removeAuth0Props();
+  return tokenStillValid;
 }
 
 function signIn(): void {
