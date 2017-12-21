@@ -106,7 +106,7 @@ function silentAuth(tokenName, audience, scope) {
 }
 
 function getExtraToken(tokenName) {
-  const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+  const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS) || '{}');
   return extraTokens[tokenName];
 }
 
