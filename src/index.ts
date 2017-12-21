@@ -44,10 +44,13 @@ function configure(properties: Auth0Properties): void {
 function isAuthenticated(): boolean {
   const expiredsAt = localStorage.getItem(EXPIRES_AT);
   if (!expiredsAt) {
+    // just guaranteeing
     removeAuth0Props();
     return false;
   }
-  return JSON.parse(expiredsAt) > Date.now();
+  const isExpired = JSON.parse(expiredsAt) > Date.now();
+  if (isExpired) removeAuth0Props();
+  return isExpired;
 }
 
 function signIn(): void {
