@@ -81,8 +81,8 @@ function subscribe(subscriber) {
     };
 }
 exports.subscribe = subscribe;
-function silentAuth(tokenName, audience, scopes) {
-    auth0Client.checkSession({ audience: audience, scopes: scopes }, function (err, authResult) {
+function silentAuth(tokenName, audience, scope) {
+    auth0Client.checkSession({ audience: audience, scope: scope }, function (err, authResult) {
         if (err) {
             console.log(err);
             return;
