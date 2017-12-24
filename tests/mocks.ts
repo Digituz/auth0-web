@@ -27,6 +27,11 @@ const auth0Mock = {
         cb(null, {accessToken, idToken, expiresIn})
       },
       properties: () => (properties),
+      checkSession: (config, cb) => {
+        cb(null, {
+          accessToken: 'some-access-token'
+        });
+      }
     }
   }
 };

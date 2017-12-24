@@ -21,6 +21,7 @@ describe('Testing basic functionality of this wrapper', () => {
   it('should return profile from localStorage', checkGetProfile);
   it('should call authorize', checkSignIn);
   it('should support authorization code flow', checkFlows);
+  it('should support silent auth', checkSilentAuth);
 
   function checkImportFunctions() {
     chai.expect(Auth0Web.configure).to.not.be.undefined;
@@ -136,5 +137,16 @@ describe('Testing basic functionality of this wrapper', () => {
     auth0Properties = {domain: 'bk-samples.auth0.com', clientID: 'someClientID', oauthFlow: AUTHORIZATION_CODE};
     Auth0Web.configure(auth0Properties);
     chai.expect(Auth0Web.auth0Client.properties().responseType).to.be.equal(AUTHORIZATION_CODE);
+  }
+
+  function checkSilentAuth() {
+    chai.expect(Auth0Web.getExtraToken('transactions')).to.be.undefined;
+    chai.expect(Auth0Web.getExtraToken('some-non-existing-token-name')).to.be.undefined;
+
+    let auth0Properties: Auth0Properties = {domain: 'bk-samples.auth0.com', clientID: 'someClientID'};
+    Auth0Web.configure(auth0Properties);
+    Auth0Web.silentAuth('transactions', 'https://transactions.auth0samples.com/', 'get:transactions');
+    chai.expect(Auth0Web.getExtraToken('transactions')).to.not.be.undefined;
+    chai.expect(Auth0Web.getExtraToken('some-non-existing-token-name')).to.be.undefined;
   }
 });
