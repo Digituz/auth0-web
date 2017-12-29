@@ -104,6 +104,12 @@ function silentAuth(tokenName, audience, scope): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     auth0Client.checkSession({ audience, scope }, function (err, authResult) {
       if (err) return reject(err);
+
+      if (!isAuthenticated()) {
+        handleAuthResult(null, authResult);
+        return resolve();
+      }
+
       const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
       extraTokens[tokenName] = authResult.accessToken;
       localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
@@ -136,6 +142,15 @@ function loadProfile(authResult: AuthResult): void {
       subscribers[key](true);
     });
   });
+}
+
+function handleAuthResult(err, authResult: AuthResult) {
+  if (authResult && authResult.accessToken && authResult.idToken) {
+    window.location.hash = '';
+    loadProfile(authResult);
+  } else if (err) {
+    console.error(`Error: ${err.error}`);
+  }
 }
 
 type AuthResult = { accessToken: string, idToken: string, expiresIn: number };

@@ -32,9 +32,14 @@ exports.configure = configure;
 function isAuthenticated() {
     var expiredsAt = localStorage.getItem(EXPIRES_AT);
     if (!expiredsAt) {
+        // just guaranteeing
+        removeAuth0Props();
         return false;
     }
-    return JSON.parse(expiredsAt) > Date.now();
+    var tokenStillValid = JSON.parse(expiredsAt) > Date.now();
+    if (!tokenStillValid)
+        removeAuth0Props();
+    return tokenStillValid;
 }
 exports.isAuthenticated = isAuthenticated;
 function signIn() {
@@ -54,12 +59,15 @@ function handleAuthCallback() {
     });
 }
 exports.handleAuthCallback = handleAuthCallback;
-function signOut() {
+function removeAuth0Props() {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(EXTRA_TOKENS);
     localStorage.removeItem(ID_TOKEN);
     localStorage.removeItem(PROFILE);
     localStorage.removeItem(EXPIRES_AT);
+}
+function signOut() {
+    removeAuth0Props();
     Object.keys(subscribers).forEach(function (key) {
         subscribers[key](false);
     });
@@ -82,19 +90,24 @@ function subscribe(subscriber) {
 }
 exports.subscribe = subscribe;
 function silentAuth(tokenName, audience, scope) {
-    auth0Client.checkSession({ audience: audience, scope: scope }, function (err, authResult) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
-        extraTokens[tokenName] = authResult.accessToken;
-        localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
+    return new Promise(function (resolve, reject) {
+        auth0Client.checkSession({ audience: audience, scope: scope }, function (err, authResult) {
+            if (err)
+                return reject(err);
+            if (!isAuthenticated()) {
+                handleAuthResult(null, authResult);
+                return resolve();
+            }
+            var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+            extraTokens[tokenName] = authResult.accessToken;
+            localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
+            return resolve();
+        });
     });
 }
 exports.silentAuth = silentAuth;
 function getExtraToken(tokenName) {
-    var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
+    var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS) || '{}');
     return extraTokens[tokenName];
 }
 exports.getExtraToken = getExtraToken;
@@ -115,5 +128,14 @@ function loadProfile(authResult) {
             subscribers[key](true);
         });
     });
+}
+function handleAuthResult(err, authResult) {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        loadProfile(authResult);
+    }
+    else if (err) {
+        console.error("Error: " + err.error);
+    }
 }
 //# sourceMappingURL=index.js.map
