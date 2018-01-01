@@ -100,20 +100,29 @@ function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
   }
 }
 
-function silentAuth(tokenName, audience, scope): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    auth0Client.checkSession({ audience, scope }, function (err, authResult) {
-      if (err) return reject(err);
+function silentAuth(tokenName, audience, scope): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    if (scope.indexOf('openid') < 0) {
+      scope = 'openid ' + scope;
+    }
+    auth0Client.checkSession({ audience, scope }, function (error, authResult) {
+      if (error && error.error !== 'login_required') {
+        // some other error
+        return reject(error);
+      } else if (error) {
+        // explicit authentication required
+        return resolve(false);
+      }
 
       if (!isAuthenticated()) {
         handleAuthResult(null, authResult);
-        return resolve();
+        return resolve(true);
       }
 
       const extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
       extraTokens[tokenName] = authResult.accessToken;
       localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
-      return resolve();
+      return resolve(true);
     });
   });
 }
