@@ -66,10 +66,16 @@ function removeAuth0Props() {
     localStorage.removeItem(PROFILE);
     localStorage.removeItem(EXPIRES_AT);
 }
-function signOut() {
+function signOut(config) {
     removeAuth0Props();
-    Object.keys(subscribers).forEach(function (key) {
-        subscribers[key](false);
+    if (!config) {
+        return Object.keys(subscribers).forEach(function (key) {
+            subscribers[key](false);
+        });
+    }
+    auth0Client.logout({
+        returnTo: process.env.REACT_APP_AUTH0_SIGN_OUT_REDIRECT_URI,
+        clientID: process.env.REACT_APP_AUTH0_CLIENT_ID
     });
 }
 exports.signOut = signOut;
@@ -91,17 +97,26 @@ function subscribe(subscriber) {
 exports.subscribe = subscribe;
 function silentAuth(tokenName, audience, scope) {
     return new Promise(function (resolve, reject) {
-        auth0Client.checkSession({ audience: audience, scope: scope }, function (err, authResult) {
-            if (err)
-                return reject(err);
+        if (scope.indexOf('openid') < 0) {
+            scope = 'openid ' + scope;
+        }
+        auth0Client.checkSession({ audience: audience, scope: scope }, function (error, authResult) {
+            if (error && error.error !== 'login_required') {
+                // some other error
+                return reject(error);
+            }
+            else if (error) {
+                // explicit authentication required
+                return resolve(false);
+            }
             if (!isAuthenticated()) {
                 handleAuthResult(null, authResult);
-                return resolve();
+                return resolve(true);
             }
             var extraTokens = JSON.parse(localStorage.getItem(EXTRA_TOKENS));
             extraTokens[tokenName] = authResult.accessToken;
             localStorage.setItem(EXTRA_TOKENS, JSON.stringify(extraTokens));
-            return resolve();
+            return resolve(true);
         });
     });
 }
