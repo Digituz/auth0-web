@@ -12,7 +12,7 @@ export function signIn(): void;
 
 export function handleAuthCallback(): void;
 
-export function signOut(config: { returnTo: string, clientID: string }): void;
+export function signOut(config?: { returnTo: string, clientID: string }): void;
 
 export function getProfile(): UserProfile | null;
 

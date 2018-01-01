@@ -77,7 +77,7 @@ function removeAuth0Props() {
   localStorage.removeItem(EXPIRES_AT);
 }
 
-function signOut(config): void {
+function signOut(config?: { returnTo: string, clientID: string }): void {
   removeAuth0Props();
   if (!config) {
     return Object.keys(subscribers).forEach(key => {
