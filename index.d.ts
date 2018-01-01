@@ -12,13 +12,13 @@ export function signIn(): void;
 
 export function handleAuthCallback(): void;
 
-export function signOut(): void;
+export function signOut(config: { returnTo: string, clientID: string }): void;
 
 export function getProfile(): UserProfile | null;
 
 export function getExtraToken(tokenName: string): string;
 
-export function silentAuth(tokenName: string, audience: string, scopes: string): void;
+export function silentAuth(tokenName: string, audience: string, scopes: string): Promise<boolean>;
 
 export function subscribe(subscriber: Subscriber): { unsubscribe: () => void };
 

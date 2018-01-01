@@ -77,10 +77,16 @@ function removeAuth0Props() {
   localStorage.removeItem(EXPIRES_AT);
 }
 
-function signOut(): void {
+function signOut(config): void {
   removeAuth0Props();
-  Object.keys(subscribers).forEach(key => {
-    subscribers[key](false);
+  if (!config) {
+    return Object.keys(subscribers).forEach(key => {
+      subscribers[key](false);
+    });
+  }
+  auth0Client.logout({
+    returnTo: process.env.REACT_APP_AUTH0_SIGN_OUT_REDIRECT_URI,
+    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID
   });
 }
 
@@ -105,7 +111,7 @@ function silentAuth(tokenName, audience, scope): Promise<boolean> {
     if (scope.indexOf('openid') < 0) {
       scope = 'openid ' + scope;
     }
-    auth0Client.checkSession({ audience, scope }, function (error, authResult) {
+    auth0Client.checkSession({audience, scope}, function (error, authResult) {
       if (error && error.error !== 'login_required') {
         // some other error
         return reject(error);
