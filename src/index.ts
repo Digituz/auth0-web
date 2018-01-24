@@ -14,6 +14,7 @@ export {
   silentAuth,
   subscribe,
   Subscriber,
+  updateProfile,
   ACCESS_TOKEN,
   AUTHORIZATION_CODE,
   EXPIRES_AT,
@@ -35,6 +36,7 @@ const IMPLICTY_RESPONSE_TYPE = 'token id_token';
 function configure(properties: Auth0Properties): void {
   // defining responseType based on how/if the developer set `oauthFlow` property
   let responseType = properties.oauthFlow == AUTHORIZATION_CODE ? AUTHORIZATION_CODE : IMPLICTY_RESPONSE_TYPE;
+  currentProperties = properties;
   auth0Client = new auth0.WebAuth({
     ...properties,
     responseType
@@ -84,15 +86,29 @@ function signOut(config?: { returnTo: string, clientID: string }): void {
       subscribers[key](false);
     });
   }
+  const { returnTo, clientID } = config;
   auth0Client.logout({
-    returnTo: process.env.REACT_APP_AUTH0_SIGN_OUT_REDIRECT_URI,
-    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID
+    returnTo,
+    clientID,
   });
 }
 
 function getProfile(): UserProfile | null {
   const profile = localStorage.getItem(PROFILE);
   return profile ? JSON.parse(profile) : null;
+}
+
+function updateProfile(userId, userMetadata, cb): void {
+  const auth0Manage = new auth0.Management({
+    domain: currentProperties.domain,
+    token: localStorage.getItem(ID_TOKEN)
+  });
+
+  auth0Manage.patchUserMetadata(userId, userMetadata, (err, updatedProfile) => {
+    if (err) cb(err);
+    localStorage.setItem(PROFILE, JSON.stringify(updatedProfile));
+    cb(null, updatedProfile);
+  });
 }
 
 function subscribe(subscriber: Subscriber): { unsubscribe: () => void } {
@@ -142,6 +158,7 @@ function getExtraToken(tokenName) {
 
 let auth0Client: any;
 let subscribers = {};
+let currentProperties = null;
 
 function loadProfile(authResult: AuthResult): void {
   auth0Client.client.userInfo(authResult.accessToken, (err, profile: UserProfile) => {

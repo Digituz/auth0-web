@@ -26,6 +26,7 @@ var IMPLICTY_RESPONSE_TYPE = 'token id_token';
 function configure(properties) {
     // defining responseType based on how/if the developer set `oauthFlow` property
     var responseType = properties.oauthFlow == AUTHORIZATION_CODE ? AUTHORIZATION_CODE : IMPLICTY_RESPONSE_TYPE;
+    currentProperties = properties;
     exports.auth0Client = auth0Client = new auth0.WebAuth(__assign({}, properties, { responseType: responseType }));
 }
 exports.configure = configure;
@@ -84,6 +85,14 @@ function getProfile() {
     return profile ? JSON.parse(profile) : null;
 }
 exports.getProfile = getProfile;
+function updateProfile(userId, userMetadata, cb) {
+    var auth0Manage = new auth0.Management({
+        domain: currentProperties.domain,
+        token: localStorage.getItem(ID_TOKEN)
+    });
+    auth0Manage.patchUserMetadata(userId, userMetadata, cb);
+}
+exports.updateProfile = updateProfile;
 function subscribe(subscriber) {
     var subscriberKey = Date.now();
     subscribers[subscriberKey] = subscriber;
@@ -130,6 +139,7 @@ exports.getExtraToken = getExtraToken;
 var auth0Client;
 exports.auth0Client = auth0Client;
 var subscribers = {};
+var currentProperties = null;
 function loadProfile(authResult) {
     auth0Client.client.userInfo(authResult.accessToken, function (err, profile) {
         var expTime = authResult.expiresIn * 1000 + Date.now();

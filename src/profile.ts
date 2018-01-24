@@ -9,24 +9,26 @@ type UserProfile = {
   username?: string,
   appMetadata?: string | any[],
   blocked?: boolean,
-  createdAt?: Date,
-  emailVerified?: boolean,
+  created_at?: Date,
+  email_verified?: boolean,
   identities?: IdentityType[],
   multifactor?: string[],
   lastIp?: string[],
-  lastLogin?: Date,
-  loginsCount?: number,
+  last_login?: Date,
+  logins_count?: number,
   name?: string,
   nickname?: string,
+  family_name?: string,
+  given_name?: string,
   phoneNumber?: string,
-  phoneVerified?: boolean,
+  phone_verified?: boolean,
   picture?: string,
-  updatedAt?: Date,
-  userMetadata?: string | any[]
+  updated_at?: Date,
+  user_metadata?: string | any[]
 };
 
 type IdentityType = {
-  userId: string,
+  user_id: string,
   // below properties are optional
   connection?: string,
   isSocial?: boolean,

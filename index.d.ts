@@ -22,6 +22,8 @@ export function silentAuth(tokenName: string, audience: string, scopes: string):
 
 export function subscribe(subscriber: Subscriber): { unsubscribe: () => void };
 
+export function updateProfile(userId: string, userMetadata: object, cb: any);
+
 export type Subscriber = Subscriber;
 
 export const ACCESS_TOKEN: string;
