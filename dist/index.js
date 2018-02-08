@@ -86,9 +86,10 @@ function getProfile() {
     return profile ? JSON.parse(profile) : null;
 }
 exports.getProfile = getProfile;
-function getToken() {
+function getAccessToken() {
     return localStorage.getItem(ACCESS_TOKEN);
 }
+exports.getAccessToken = getAccessToken;
 function updateProfile(userId, userMetadata, cb) {
     var auth0Manage = new auth0.Management({
         domain: currentProperties.domain,

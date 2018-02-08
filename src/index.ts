@@ -9,6 +9,7 @@ export {
   signIn,
   handleAuthCallback,
   signOut,
+  getAccessToken,
   getExtraToken,
   getProfile,
   silentAuth,
@@ -98,7 +99,7 @@ function getProfile(): UserProfile | null {
   return profile ? JSON.parse(profile) : null;
 }
 
-function getToken(): string | null {
+function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN);
 }
 
