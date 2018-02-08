@@ -98,6 +98,10 @@ function getProfile(): UserProfile | null {
   return profile ? JSON.parse(profile) : null;
 }
 
+function getToken(): string | null {
+  return localStorage.getItem(ACCESS_TOKEN);
+}
+
 function updateProfile(userId, userMetadata, cb): void {
   const auth0Manage = new auth0.Management({
     domain: currentProperties.domain,

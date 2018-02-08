@@ -16,6 +16,8 @@ export function signOut(config?: { returnTo: string, clientID: string }): void;
 
 export function getProfile(): UserProfile | null;
 
+export function getAccessToken(): string | null;
+
 export function getExtraToken(tokenName: string): string;
 
 export function silentAuth(tokenName: string, audience: string, scopes: string): Promise<boolean>;
