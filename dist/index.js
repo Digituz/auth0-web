@@ -74,9 +74,10 @@ function signOut(config) {
             subscribers[key](false);
         });
     }
+    var returnTo = config.returnTo, clientID = config.clientID;
     auth0Client.logout({
-        returnTo: process.env.REACT_APP_AUTH0_SIGN_OUT_REDIRECT_URI,
-        clientID: process.env.REACT_APP_AUTH0_CLIENT_ID
+        returnTo: returnTo,
+        clientID: clientID,
     });
 }
 exports.signOut = signOut;
@@ -85,12 +86,20 @@ function getProfile() {
     return profile ? JSON.parse(profile) : null;
 }
 exports.getProfile = getProfile;
+function getToken() {
+    return localStorage.getItem(ACCESS_TOKEN);
+}
 function updateProfile(userId, userMetadata, cb) {
     var auth0Manage = new auth0.Management({
         domain: currentProperties.domain,
         token: localStorage.getItem(ID_TOKEN)
     });
-    auth0Manage.patchUserMetadata(userId, userMetadata, cb);
+    auth0Manage.patchUserMetadata(userId, userMetadata, function (err, updatedProfile) {
+        if (err)
+            cb(err);
+        localStorage.setItem(PROFILE, JSON.stringify(updatedProfile));
+        cb(null, updatedProfile);
+    });
 }
 exports.updateProfile = updateProfile;
 function subscribe(subscriber) {
