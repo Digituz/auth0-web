@@ -60,12 +60,12 @@ function signIn(): void {
   auth0Client.authorize();
 }
 
-function handleAuthCallback(): void {
+function handleAuthCallback(cb?: (err?: any) => void): void {
   // When Auth0 hash parsed, get profile
   auth0Client.parseHash((err, authResult: AuthResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
       window.location.hash = '';
-      loadProfile(authResult);
+      loadProfile(authResult, cb);
     } else if (err) {
       console.error(`Error: ${err.error}`);
     }
@@ -165,8 +165,9 @@ let auth0Client: any;
 let subscribers = {};
 let currentProperties = null;
 
-function loadProfile(authResult: AuthResult): void {
+function loadProfile(authResult: AuthResult, cb?: (err?: any) => void): void {
   auth0Client.client.userInfo(authResult.accessToken, (err, profile: UserProfile) => {
+    if (err && cb) return cb(err);
     const expTime = authResult.expiresIn * 1000 + Date.now();
     // Save session data and update login status subject
     localStorage.setItem(ACCESS_TOKEN, authResult.accessToken);
@@ -178,6 +179,7 @@ function loadProfile(authResult: AuthResult): void {
     Object.keys(subscribers).forEach(key => {
       subscribers[key](true);
     });
+    if (cb) return cb();
   });
 }
 

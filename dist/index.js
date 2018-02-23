@@ -47,12 +47,12 @@ function signIn() {
     auth0Client.authorize();
 }
 exports.signIn = signIn;
-function handleAuthCallback() {
+function handleAuthCallback(cb) {
     // When Auth0 hash parsed, get profile
     auth0Client.parseHash(function (err, authResult) {
         if (authResult && authResult.accessToken && authResult.idToken) {
             window.location.hash = '';
-            loadProfile(authResult);
+            loadProfile(authResult, cb);
         }
         else if (err) {
             console.error("Error: " + err.error);
@@ -150,8 +150,10 @@ var auth0Client;
 exports.auth0Client = auth0Client;
 var subscribers = {};
 var currentProperties = null;
-function loadProfile(authResult) {
+function loadProfile(authResult, cb) {
     auth0Client.client.userInfo(authResult.accessToken, function (err, profile) {
+        if (err && cb)
+            return cb(err);
         var expTime = authResult.expiresIn * 1000 + Date.now();
         // Save session data and update login status subject
         localStorage.setItem(ACCESS_TOKEN, authResult.accessToken);
@@ -162,6 +164,8 @@ function loadProfile(authResult) {
         Object.keys(subscribers).forEach(function (key) {
             subscribers[key](true);
         });
+        if (cb)
+            return cb();
     });
 }
 function handleAuthResult(err, authResult) {

@@ -10,7 +10,7 @@ export function isAuthenticated(): boolean;
 
 export function signIn(): void;
 
-export function handleAuthCallback(): void;
+export function handleAuthCallback(cb?: (err?: any) => void): void;
 
 export function signOut(config?: { returnTo: string, clientID: string }): void;
 
