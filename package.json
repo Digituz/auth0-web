@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc --sourceMap true -p ./ --outDir dist/",
     "test": "nyc mocha -r jsdom-global -r mock-local-storage -r ts-node/register -r source-map-support/register tests/**/*.spec.ts"
   },
   "nyc": {

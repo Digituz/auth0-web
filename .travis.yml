@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - node
 before_deploy:
-- tsc -p ./ --outDir dist/
+- tsc --sourceMap true -p ./ --outDir dist/
 deploy:
   skip_cleanup: true
   provider: npm
