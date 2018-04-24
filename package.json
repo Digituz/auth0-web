@@ -26,15 +26,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brunokrebs/auth0-web.git"
+    "url": "git+https://github.com/digituz/auth0-web.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brunokrebs/auth0-web/issues"
+    "url": "https://github.com/digituz/auth0-web/issues"
   },
-  "homepage": "https://github.com/brunokrebs/auth0-web#readme",
+  "homepage": "https://github.com/digituz/auth0-web#readme",
   "devDependencies": {
     "@types/chai": "^4.0.7",
     "@types/mocha": "^2.2.44",

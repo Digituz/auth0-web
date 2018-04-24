@@ -64,11 +64,11 @@ tsc -p ./ --outDir dist/
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 <!-- vars -->
-[codecov-image]: https://img.shields.io/codecov/c/github/brunokrebs/auth0-web/master.svg
-[codecov-url]: https://codecov.io/github/brunokrebs/auth0-web?branch=master
+[codecov-image]: https://img.shields.io/codecov/c/github/Digituz/auth0-web/master.svg
+[codecov-url]: https://codecov.io/github/Digituz/auth0-web?branch=master
 [license-image]: http://img.shields.io/npm/l/auth0-web.svg
 [license-url]: #license
-[travis-image]: https://api.travis-ci.org/brunokrebs/auth0-web.svg?branch=master
-[travis-url]: https://travis-ci.org/brunokrebs/auth0-web
+[travis-image]: https://api.travis-ci.org/Digituz/auth0-web.svg?branch=master
+[travis-url]: https://travis-ci.org/Digituz/auth0-web
 [npm-image]: https://img.shields.io/npm/v/auth0-web.svg
 [npm-url]: https://npmjs.org/package/auth0-web
